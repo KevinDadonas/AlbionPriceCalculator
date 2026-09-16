@@ -22,6 +22,16 @@ body {
   background: #3b3747;
 }
 
+/* Esconde a barra de rolagem mantendo a funcionalidade de scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari e Chrome */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* Renderização limpa dos ícones do Albion */
 img {
   image-rendering: -webkit-optimize-contrast;

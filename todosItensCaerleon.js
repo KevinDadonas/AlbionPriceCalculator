@@ -20,19 +20,19 @@ function estiloQualidade(q) {
 
 function obterEncantamentoTexto(itemId) {
   const idUpper = itemId.toUpperCase();
-  if (idUpper.includes('@1')) return '.1';
-  if (idUpper.includes('@2')) return '.2';
-  if (idUpper.includes('@3')) return '.3';
-  if (idUpper.includes('@4')) return '.4';
-  return '.0';
+  if (idUpper.includes('@1')) return '1';
+  if (idUpper.includes('@2')) return '2';
+  if (idUpper.includes('@3')) return '3';
+  if (idUpper.includes('@4')) return '4';
+  return '0';
 }
 
 function estiloEncantamento(enc) {
-  if (enc === '.0') return 'bg-gray-800 text-gray-400 border-gray-700/40';
-  if (enc === '.1') return 'bg-green-950/60 text-green-400 border-green-800/40';
-  if (enc === '.2') return 'bg-blue-950/60 text-blue-400 border-blue-800/40';
-  if (enc === '.3') return 'bg-purple-950/60 text-purple-400 border-purple-800/40';
-  if (enc === '.4') return 'bg-amber-950/60 text-amber-400 border-amber-800/40';
+  if (enc === '0') return 'bg-gray-800 text-gray-400 border-gray-700/40';
+  if (enc === '1') return 'bg-green-950/60 text-green-400 border-green-800/40';
+  if (enc === '2') return 'bg-blue-950/60 text-blue-400 border-blue-800/40';
+  if (enc === '3') return 'bg-purple-950/60 text-purple-400 border-purple-800/40';
+  if (enc === '4') return 'bg-amber-950/60 text-amber-400 border-amber-800/40';
   return 'bg-gray-800 text-gray-300 border-gray-700/40';
 }
 
