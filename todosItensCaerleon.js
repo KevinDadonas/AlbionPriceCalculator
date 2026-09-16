@@ -27,6 +27,15 @@ function obterEncantamentoTexto(itemId) {
   return '.0';
 }
 
+function estiloEncantamento(enc) {
+  if (enc === '.0') return 'bg-gray-800 text-gray-400 border-gray-700/40';
+  if (enc === '.1') return 'bg-green-950/60 text-green-400 border-green-800/40';
+  if (enc === '.2') return 'bg-blue-950/60 text-blue-400 border-blue-800/40';
+  if (enc === '.3') return 'bg-purple-950/60 text-purple-400 border-purple-800/40';
+  if (enc === '.4') return 'bg-amber-950/60 text-amber-400 border-amber-800/40';
+  return 'bg-gray-800 text-gray-300 border-gray-700/40';
+}
+
 function obterTierTexto(itemId) {
   const match = itemId.match(/^T(\d)/i);
   const tier = match ? match[1] : '4';
@@ -100,6 +109,7 @@ function renderizarLinhaTabela(oportunidade) {
   const idBase = obterIdBase(itemId);
   const nomeItem = mapaNomesItens[idBase] || idBase;
   const tierBadge = obterTierTexto(itemId);
+  const encantamento = obterEncantamentoTexto(itemId);
   const imgUrl = `https://render.albiononline.com/v1/item/${itemId}.png`;
 
   return `
@@ -114,9 +124,17 @@ function renderizarLinhaTabela(oportunidade) {
         </div>
       </td>
       <td class="py-3 px-4 text-gray-300">${compra.cidade} → ${venda.cidade}</td>
+      
+      <!-- Coluna Qualidade -->
       <td class="py-3 px-4">
         <span class="px-2 py-0.5 rounded-full text-[10px] border font-semibold ${estiloQualidade(qualidade)}">${nomeQualidade(qualidade)}</span>
       </td>
+
+      <!-- Coluna Encantamento -->
+      <td class="py-3 px-4">
+        <span class="px-2 py-0.5 rounded-full text-[10px] border font-semibold ${estiloEncantamento(encantamento)}">Encantamento ${encantamento}</span>
+      </td>
+
       <td class="py-3 px-4 text-right font-mono text-gray-300">${compra.preco.toLocaleString('pt-BR')}</td>
       <td class="py-3 px-4 text-right font-mono text-gray-300">${venda.preco.toLocaleString('pt-BR')}</td>
       <td class="py-3 px-4 text-center">
@@ -136,7 +154,6 @@ async function monitorarMercado(listaCompletaItens) {
   const lotes = criarLotes(listaCompletaItens, TAMANHO_LOTE);
   const todasCidades = [...CIDADES_ORIGEM, ...CIDADES_DESTINO].join(',');
 
-  // Limpa o conteúdo estático inicial
   tabelaCorpo.innerHTML = '';
   const oportunidadesEncontradas = [];
 
@@ -183,7 +200,7 @@ async function monitorarMercado(listaCompletaItens) {
           const precoVenda = info.venda.preco;
 
           if (precoCompra < Infinity && precoVenda > 0) {
-            const taxaMercado = 0.04; // 4% Premium
+            const taxaMercado = 0.04;
             const valorLiquido = precoVenda * (1 - taxaMercado);
             const lucroLiquido = Math.floor(valorLiquido - precoCompra);
             const margem = ((lucroLiquido / precoCompra) * 100).toFixed(1);
@@ -196,8 +213,6 @@ async function monitorarMercado(listaCompletaItens) {
               };
               
               oportunidadesEncontradas.push(oportunidade);
-
-              // Adiciona a nova linha encontrada na tabela HTML em tempo real
               tabelaCorpo.insertAdjacentHTML('beforeend', renderizarLinhaTabela(oportunidade));
             }
           }
@@ -215,7 +230,7 @@ async function iniciar() {
   const tabelaCorpo = document.getElementById('tabelaCorpo');
   tabelaCorpo.innerHTML = `
     <tr>
-      <td colspan="9" class="py-8 text-center text-gray-400">
+      <td colspan="10" class="py-8 text-center text-gray-400">
         Carregando banco de dados de itens e nomes em português...
       </td>
     </tr>
@@ -226,7 +241,6 @@ async function iniciar() {
   if (todosOsItens.length > 0) {
     const rodarCiclo = async () => {
       await monitorarMercado(todosOsItens);
-      // Reinicia o ciclo após 10 segundos ao finalizar todas as páginas de lotes
       setTimeout(rodarCiclo, 10000);
     };
 
