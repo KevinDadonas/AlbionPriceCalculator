@@ -15,6 +15,18 @@
 <body class="bg-[#0f0e13] text-gray-200 font-['Inter'] antialiased min-h-screen p-6">
 
   <div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-gray-100">Albion Market Monitor</h2>
+      
+      <button 
+        id="btnToggleMonitor" 
+        onclick="alternarMonitoramento()" 
+        class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/40 cursor-pointer">
+        <span id="iconeBtn">▶</span>
+        <span id="textoBtn">Iniciar Monitoramento</span>
+      </button>
+  </div>
     
     <!-- Tabela Principal -->
     <div class="bg-[#18161e] rounded-xl border border-gray-800/60 shadow-xl overflow-hidden">

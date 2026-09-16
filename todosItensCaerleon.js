@@ -5,6 +5,8 @@ const CIDADES_DESTINO = ['Caerleon', 'Black Market'];
 const LUCRO_MINIMO = 0; // IMPORTANTE
 const TAMANHO_LOTE = 40;
 const PAUSA_MS = 600;
+let monitoramentoAtivo = false;
+let todosOsItens = [];
 
 const mapaNomesItens = {};
 
@@ -151,15 +153,56 @@ function renderizarLinhaTabela(oportunidade) {
   `;
 }
 
+// Função chamada pelo clique do botão
+function alternarMonitoramento() {
+  const btn = document.getElementById('btnToggleMonitor');
+  const icone = document.getElementById('iconeBtn');
+  const texto = document.getElementById('textoBtn');
+
+  monitoramentoAtivo = !monitoramentoAtivo;
+
+  if (monitoramentoAtivo) {
+    // Estilo visual: Parar (Vermelho / Amber)
+    btn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-950/40 cursor-pointer';
+    icone.innerText = '⏸';
+    texto.innerText = 'Pausar Monitoramento';
+    
+    // Inicia o loop de requisições
+    executarCiclo();
+  } else {
+    // Estilo visual: Iniciar (Verde)
+    btn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/40 cursor-pointer';
+    icone.innerText = '▶';
+    texto.innerText = 'Iniciar Monitoramento';
+  }
+}
+
+async function executarCiclo() {
+  if (!monitoramentoAtivo) return;
+
+  await monitorarMercado(todosOsItens);
+
+  // Se o usuário não pausou durante a execução do lote, agenda o próximo ciclo
+  if (monitoramentoAtivo) {
+    setTimeout(executarCiclo, 10000);
+  }
+}
+
 async function monitorarMercado(listaCompletaItens) {
   const tabelaCorpo = document.getElementById('tabelaCorpo');
   const lotes = criarLotes(listaCompletaItens, TAMANHO_LOTE);
-  const todasCidades = [...CIDADES_ORIGEM, ...CIDADES_DESTINO].join(',');
+  
+  const cidadesOrigemOk = ['Bridgewatch', 'FortSterling', 'Lymhurst', 'Martlock', 'Thetford'];
+  const cidadesDestinoOk = ['Caerleon', 'Black Market', 'BlackMarket'];
+  const todasCidades = [...cidadesOrigemOk, ...cidadesDestinoOk].join(',');
 
   for (let i = 0; i < lotes.length; i++) {
+    // Se o usuário pausou o monitoramento no meio dos lotes, interrompe o loop imediatamente
+    if (!monitoramentoAtivo) break;
+
     const loteAtual = lotes[i];
     const itemList = loteAtual.join(',');
-    const url = `${BASE_URL}/api/v2/stats/prices/${itemList}.json?locations=${todasCidades}&qualities=1,2,3,4,5`;
+    const url = `${BASE_URL}/api/v2/stats/prices/${itemList}.json?locations=${todasCidades}&qualities=1,2,3,4,5&_t=${Date.now()}`;
 
     try {
       const response = await fetch(url);
@@ -168,7 +211,7 @@ async function monitorarMercado(listaCompletaItens) {
         const relatorioLote = {};
 
         dados.forEach(entry => {
-          const itemId = entry.item_id;
+          const itemId = entry.item_id.toUpperCase();
           const qualidade = entry.quality;
           const chave = `${itemId}_Q${qualidade}`;
 
@@ -181,13 +224,15 @@ async function monitorarMercado(listaCompletaItens) {
             };
           }
 
-          if (CIDADES_ORIGEM.includes(entry.city)) {
+          const cidadeEntrada = entry.city.replace(/\s+/g, '');
+
+          if (cidadesOrigemOk.some(c => c.toLowerCase() === cidadeEntrada.toLowerCase())) {
             if (entry.sell_price_min > 0 && entry.sell_price_min < relatorioLote[chave].compra.preco) {
               relatorioLote[chave].compra = { cidade: entry.city, preco: entry.sell_price_min };
             }
           }
 
-          if (CIDADES_DESTINO.includes(entry.city)) {
+          if (cidadesDestinoOk.some(c => c.toLowerCase() === cidadeEntrada.toLowerCase())) {
             if (entry.buy_price_max > relatorioLote[chave].venda.preco) {
               relatorioLote[chave].venda = { cidade: entry.city, preco: entry.buy_price_max };
             }
@@ -199,7 +244,7 @@ async function monitorarMercado(listaCompletaItens) {
           const precoVenda = info.venda.preco;
 
           if (precoCompra < Infinity && precoVenda > 0) {
-            const taxaMercado = 0.08; //IMPORTANTE 0.08 (8%) para SEM Premium e 0.04 (4%) para COM Premium
+            const taxaMercado = 0.04;
             const valorLiquido = precoVenda * (1 - taxaMercado);
             const lucroLiquido = Math.floor(valorLiquido - precoCompra);
             const margem = ((lucroLiquido / precoCompra) * 100).toFixed(1);
@@ -230,6 +275,32 @@ async function monitorarMercado(listaCompletaItens) {
     await esperar(PAUSA_MS);
   }
 }
+
+async function iniciar() {
+  const tabelaCorpo = document.getElementById('tabelaCorpo');
+  tabelaCorpo.innerHTML = `
+    <tr id="linhaMensagemCarregando">
+      <td colspan="10" class="py-8 text-center text-gray-400">
+        Carregando banco de dados de itens e nomes em português...
+      </td>
+    </tr>
+  `;
+
+  // Carrega apenas a lista estática de IDs de itens
+  todosOsItens = await carregarTodosOsItensEquipaveis();
+
+  if (todosOsItens.length > 0) {
+    tabelaCorpo.innerHTML = `
+      <tr>
+        <td colspan="10" class="py-8 text-center text-gray-500">
+          Clique em <b>Iniciar Monitoramento</b> para buscar oportunidades em tempo real.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', iniciar);
 
 async function iniciar() {
   const tabelaCorpo = document.getElementById('tabelaCorpo');
