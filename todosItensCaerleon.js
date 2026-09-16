@@ -2,7 +2,7 @@ const BASE_URL = 'https://west.albion-online-data.com'; // Altere para 'europe' 
 const CIDADES_ORIGEM = ['Bridgewatch', 'FortSterling', 'Lymhurst', 'Martlock', 'Thetford'];
 const CIDADES_DESTINO = ['Caerleon', 'BlackMarket'];
 
-const LUCRO_MINIMO = 5000;
+const LUCRO_MINIMO = 0; //EXTREMAMENTE IMPORTANTE, MARCA QUANTO EU QUERO TER DE LUCRO
 const TAMANHO_LOTE = 40;
 const PAUSA_MS = 600;
 
@@ -200,7 +200,7 @@ async function monitorarMercado(listaCompletaItens) {
           const precoVenda = info.venda.preco;
 
           if (precoCompra < Infinity && precoVenda > 0) {
-            const taxaMercado = 0.04;
+            const taxaMercado = 0.08; //0.08 (8%) para SEM Premium | 0.04 (4%) para COM Premium
             const valorLiquido = precoVenda * (1 - taxaMercado);
             const lucroLiquido = Math.floor(valorLiquido - precoCompra);
             const margem = ((lucroLiquido / precoCompra) * 100).toFixed(1);
