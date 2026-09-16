@@ -1,6 +1,6 @@
 const BASE_URL = 'https://west.albion-online-data.com'; // Altere para 'europe' ou 'east' se necessário
 const CIDADES_ORIGEM = ['Bridgewatch', 'FortSterling', 'Lymhurst', 'Martlock', 'Thetford'];
-const CIDADES_DESTINO = ['Caerleon', 'BlackMarket'];
+const CIDADES_DESTINO = ['Caerleon', 'Black Market'];
 
 const LUCRO_MINIMO = 0; // IMPORTANTE
 const TAMANHO_LOTE = 40;
