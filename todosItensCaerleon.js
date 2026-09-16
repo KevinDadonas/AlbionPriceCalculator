@@ -2,7 +2,7 @@ const BASE_URL = 'https://west.albion-online-data.com'; // Altere para 'europe' 
 const CIDADES_ORIGEM = ['Bridgewatch', 'FortSterling', 'Lymhurst', 'Martlock', 'Thetford'];
 const CIDADES_DESTINO = ['Caerleon', 'BlackMarket'];
 
-const LUCRO_MINIMO = 0; //EXTREMAMENTE IMPORTANTE, MARCA QUANTO EU QUERO TER DE LUCRO
+const LUCRO_MINIMO = 0; // IMPORTANTE
 const TAMANHO_LOTE = 40;
 const PAUSA_MS = 600;
 
@@ -111,9 +111,11 @@ function renderizarLinhaTabela(oportunidade) {
   const tierBadge = obterTierTexto(itemId);
   const encantamento = obterEncantamentoTexto(itemId);
   const imgUrl = `https://render.albiononline.com/v1/item/${itemId}.png`;
+  
+  const linhaId = `item-${itemId}-Q${qualidade}`.replace(/[@.]/g, '_');
 
   return `
-    <tr class="hover:bg-[#1f1d27] transition-colors">
+    <tr id="${linhaId}" class="hover:bg-[#1f1d27] transition-colors">
       <td class="py-3 px-4 flex items-center gap-3">
         <div class="relative w-10 h-10 bg-[#111015] border border-gray-700/50 rounded-lg flex items-center justify-center overflow-hidden">
           <img src="${imgUrl}" alt="${nomeItem}" class="w-9 h-9 object-contain" loading="lazy">
@@ -153,9 +155,6 @@ async function monitorarMercado(listaCompletaItens) {
   const tabelaCorpo = document.getElementById('tabelaCorpo');
   const lotes = criarLotes(listaCompletaItens, TAMANHO_LOTE);
   const todasCidades = [...CIDADES_ORIGEM, ...CIDADES_DESTINO].join(',');
-
-  tabelaCorpo.innerHTML = '';
-  const oportunidadesEncontradas = [];
 
   for (let i = 0; i < lotes.length; i++) {
     const loteAtual = lotes[i];
@@ -200,7 +199,7 @@ async function monitorarMercado(listaCompletaItens) {
           const precoVenda = info.venda.preco;
 
           if (precoCompra < Infinity && precoVenda > 0) {
-            const taxaMercado = 0.08; //0.08 (8%) para SEM Premium | 0.04 (4%) para COM Premium
+            const taxaMercado = 0.08; //IMPORTANTE 0.08 (8%) para SEM Premium e 0.04 (4%) para COM Premium
             const valorLiquido = precoVenda * (1 - taxaMercado);
             const lucroLiquido = Math.floor(valorLiquido - precoCompra);
             const margem = ((lucroLiquido / precoCompra) * 100).toFixed(1);
@@ -212,8 +211,14 @@ async function monitorarMercado(listaCompletaItens) {
                 margem
               };
               
-              oportunidadesEncontradas.push(oportunidade);
-              tabelaCorpo.insertAdjacentHTML('beforeend', renderizarLinhaTabela(oportunidade));
+              const linhaId = `item-${info.itemId}-Q${info.qualidade}`.replace(/[@.]/g, '_');
+              const linhaExistente = document.getElementById(linhaId);
+
+              if (linhaExistente) {
+                linhaExistente.outerHTML = renderizarLinhaTabela(oportunidade);
+              } else {
+                tabelaCorpo.insertAdjacentHTML('beforeend', renderizarLinhaTabela(oportunidade));
+              }
             }
           }
         }
@@ -229,7 +234,7 @@ async function monitorarMercado(listaCompletaItens) {
 async function iniciar() {
   const tabelaCorpo = document.getElementById('tabelaCorpo');
   tabelaCorpo.innerHTML = `
-    <tr>
+    <tr id="linhaMensagemCarregando">
       <td colspan="10" class="py-8 text-center text-gray-400">
         Carregando banco de dados de itens e nomes em português...
       </td>
@@ -239,6 +244,9 @@ async function iniciar() {
   const todosOsItens = await carregarTodosOsItensEquipaveis();
 
   if (todosOsItens.length > 0) {
+    const msg = document.getElementById('linhaMensagemCarregando');
+    if (msg) msg.remove();
+
     const rodarCiclo = async () => {
       await monitorarMercado(todosOsItens);
       setTimeout(rodarCiclo, 10000);
