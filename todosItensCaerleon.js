@@ -117,9 +117,22 @@ function renderizarLinhaTabela(oportunidade) {
   const linhaId = `item-${itemId}-Q${qualidade}`.replace(/[@.]/g, '_');
 
   return `
-    <tr id="${linhaId}" class="hover:bg-[#1f1d27] transition-colors">
+    <tr id="${linhaId}" class="hover:bg-[#1f1d27] transition-colors border-b border-gray-800/40">
+      <!-- Coluna 1: Favorito (Bolinha) -->
+      <td class="py-3 px-2 text-center align-middle w-12">
+        <button 
+          type="button"
+          onclick="toggleHighlight(this)"
+          title="Marcar item como interessante"
+          class="btn-highlight w-5 h-5 rounded-full border-2 border-gray-500/50 bg-transparent hover:border-red-500/80 transition-all cursor-pointer flex items-center justify-center mx-auto"
+        >
+          <span class="w-2.5 h-2.5 rounded-full bg-transparent pointer-events-none transition-all"></span>
+        </button>
+      </td>
+
+      <!-- Coluna 2: Item -->
       <td class="py-3 px-4 flex items-center gap-3">
-        <div class="relative w-10 h-10 bg-[#111015] border border-gray-700/50 rounded-lg flex items-center justify-center overflow-hidden">
+        <div class="relative w-10 h-10 bg-[#111015] border border-gray-700/50 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
           <img src="${imgUrl}" alt="${nomeItem}" class="w-9 h-9 object-contain" loading="lazy">
         </div>
         <div>
@@ -127,27 +140,33 @@ function renderizarLinhaTabela(oportunidade) {
           <span class="inline-block mt-0.5 px-1.5 py-0.2 text-[10px] font-bold rounded bg-amber-950 text-amber-500 border border-amber-800/60">${tierBadge}</span>
         </div>
       </td>
+
+      <!-- Coluna 3: Cidade -->
       <td class="py-3 px-4 text-gray-300">${compra.cidade} → ${venda.cidade}</td>
       
-      <!-- Coluna Qualidade -->
+      <!-- Coluna 4: Qualidade -->
       <td class="py-3 px-4">
         <span class="px-2 py-0.5 rounded-full text-[10px] border font-semibold ${estiloQualidade(qualidade)}">${nomeQualidade(qualidade)}</span>
       </td>
 
-      <!-- Coluna Encantamento -->
+      <!-- Coluna 5: Encantamento -->
       <td class="py-3 px-4">
         <span class="px-2 py-0.5 rounded-full text-[10px] border font-semibold ${estiloEncantamento(encantamento)}">Encantamento ${encantamento}</span>
       </td>
 
+      <!-- Coluna 6: Compra -->
       <td class="py-3 px-4 text-right font-mono text-gray-300">${compra.preco.toLocaleString('pt-BR')}</td>
+
+      <!-- Coluna 7: Venda Direta -->
       <td class="py-3 px-4 text-right font-mono text-gray-300">${venda.preco.toLocaleString('pt-BR')}</td>
-      <td class="py-3 px-4 text-center">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Alta
-        </span>
-      </td>
+
+      <!-- Coluna 8: Lucro -->
       <td class="py-3 px-4 text-right font-mono font-bold text-amber-400 text-sm">+${lucroLiquido.toLocaleString('pt-BR')}</td>
+
+      <!-- Coluna 9: Margem -->
       <td class="py-3 px-4 text-right font-mono text-gray-300">${margem}%</td>
+
+      <!-- Coluna 10: Atualização -->
       <td class="py-3 px-4 text-right text-emerald-500/80 font-medium text-[11px]">Recente</td>
     </tr>
   `;
