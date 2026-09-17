@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sobre o Projeto - Albion Market Monitor</title>
+  <title>Sobre e Documentação - Albion Market Monitor</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Opcional: Esconde a barra de rolagem visual mantendo a rolagem ativa */
+    /* Esconde a barra de rolagem visual mantendo a rolagem ativa */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -24,7 +24,7 @@
   <header class="p-4 border-b border-gray-800 bg-[#131218] flex justify-between items-center shrink-0">
     <div class="flex items-center gap-3">
       <h1 class="text-xl font-bold text-amber-500">Albion Market Monitor</h1>
-      <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-medium">Guia & Documentação</span>
+      <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-medium">Guia & Documentação API</span>
     </div>
     
     <!-- Link para voltar ao monitoramento -->
@@ -41,7 +41,7 @@
       <section class="text-center space-y-3">
         <h2 class="text-3xl font-extrabold text-gray-100 tracking-tight">Como Funciona a Monitoria de Mercado</h2>
         <p class="text-sm text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          Entenda de onde vêm as oportunidades exibidas na plataforma, o grau de precisão dos preços e as melhores práticas para utilizar nossa ferramenta sem sobrecarregar seu navegador.
+          Entenda a origem dos preços, as especificações técnicas da API pública do Albion Data Project e as boas práticas de uso para evitar sobrecarga de memória.
         </p>
       </section>
 
@@ -58,26 +58,105 @@
         </div>
 
         <p class="text-xs leading-relaxed text-gray-300">
-          Esta aplicação consome a API pública e gratuita do projeto <strong>Albion Data Project</strong>. Trata-se de uma rede distribuída onde os próprios jogadores alimentam o banco de dados em tempo real.
+          Esta aplicação consome a API REST pública do <strong>Albion Data Project</strong>. Trata-se de um ecossistema mantido pela comunidade onde os próprios jogadores alimentam o banco de dados via captura de pacotes de rede enquanto utilizam o mercado no jogo.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-1">
             <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Coleta Passiva</span>
             <p class="text-xs text-gray-400">
-              Jogadores utilizam o cliente de dados oficial do projeto rodando em segundo plano enquanto jogam.
+              Jogadores utilizam o cliente oficial do projeto (Albion Data Client) em segundo plano enquanto jogam.
             </p>
           </div>
           <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-1">
-            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Atualização no Mercado</span>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Atualização On-Demand</span>
             <p class="text-xs text-gray-400">
-              Quando um jogador abre a janela do mercado de uma cidade, os preços visualizados são enviados à API.
+              Quando um jogador inspeciona as ordens do mercado em uma cidade, as informações vistas são enviadas para a API.
             </p>
           </div>
         </div>
       </section>
 
-      <!-- CARD 2: CONFIABILIDADE DOS PREÇOS (ALERTAS) -->
+      <!-- CARD 2: DOCUMENTAÇÃO TÉCNICA DA API -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-5">
+        <div class="flex items-center justify-between border-b border-gray-800/80 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-lg">
+              🛠️
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-100">Documentação da API v2</h3>
+              <p class="text-xs text-gray-400">Endpoints e parâmetros utilizados pela nossa aplicação</p>
+            </div>
+          </div>
+          <a href="https://www.albion-online-data.com/api/" target="_blank" rel="noopener noreferrer" class="text-xs bg-sky-500/10 text-sky-400 border border-sky-500/20 px-3 py-1.5 rounded-lg hover:bg-sky-500/20 transition-all font-semibold flex items-center gap-1">
+            Swagger / Docs ↗
+          </a>
+        </div>
+
+        <!-- Servidores / Hosts -->
+        <div class="space-y-2">
+          <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">Base URLs (Por Servidor)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+            <div class="bg-[#131218] p-2.5 rounded border border-gray-800/60">
+              <span class="text-amber-400 font-sans block text-[10px] font-bold">Americas (West)</span>
+              west.albion-online-data.com
+            </div>
+            <div class="bg-[#131218] p-2.5 rounded border border-gray-800/60">
+              <span class="text-amber-400 font-sans block text-[10px] font-bold">Europe</span>
+              europe.albion-online-data.com
+            </div>
+            <div class="bg-[#131218] p-2.5 rounded border border-gray-800/60">
+              <span class="text-amber-400 font-sans block text-[10px] font-bold">Asia (East)</span>
+              east.albion-online-data.com
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoints principais -->
+        <div class="space-y-3 pt-2">
+          <span class="text-xs font-bold text-gray-300 uppercase tracking-wider block">Principais Endpoints</span>
+          
+          <!-- Endpoint 1: Prices -->
+          <div class="bg-[#131218] p-3.5 rounded-lg border border-gray-800/60 space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded font-mono">GET</span>
+              <code class="text-xs text-sky-300 font-mono">/api/v2/stats/prices/{itemList}.json</code>
+            </div>
+            <p class="text-xs text-gray-400">
+              Retorna o menor preço de venda e maior preço de compra para os itens informados.
+            </p>
+            <div class="flex flex-wrap gap-2 pt-1 font-mono text-[10px]">
+              <span class="bg-gray-800 text-gray-300 px-2 py-0.5 rounded">locations=Caerleon,Bridgewatch</span>
+              <span class="bg-gray-800 text-gray-300 px-2 py-0.5 rounded">qualities=1,2,3,4,5</span>
+            </div>
+          </div>
+
+          <!-- Endpoint 2: History -->
+          <div class="bg-[#131218] p-3.5 rounded-lg border border-gray-800/60 space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded font-mono">GET</span>
+              <code class="text-xs text-sky-300 font-mono">/api/v2/stats/history/{itemList}.json</code>
+            </div>
+            <p class="text-xs text-gray-400">
+              Retorna o histórico de volume e preços agrupados por intervalos de tempo (ex: 6 horas, 24 horas).
+            </p>
+          </div>
+        </div>
+
+        <!-- Limits / Regras -->
+        <div class="bg-sky-950/20 border border-sky-800/30 rounded-lg p-3 text-xs text-sky-200/80 flex items-start gap-2.5">
+          <span class="text-base">⏱️</span>
+          <div>
+            <strong class="text-sky-300">Limites Oficiais de Requisição (Rate Limits):</strong>
+            <p class="text-sky-200/70 text-[11px] mt-0.5">
+              Até <strong>180 requisições por minuto</strong> (ou 300 requisições a cada 5 minutos). O tamanho máximo da URL é de 4096 caracteres, permitindo consultar dezenas de itens em um único lote.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 3: CONFIABILIDADE DOS PREÇOS (ALERTAS) -->
       <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-lg">
@@ -90,7 +169,7 @@
         </div>
 
         <p class="text-xs leading-relaxed text-gray-300">
-          Como a coleta depende do tráfego de jogadores, a precisão varia de acordo com a movimentação da cidade e do item consultado:
+          Como a coleta depende do tráfego de jogadores na cidade correspondente, a precisão varia segundo o volume de buscas:
         </p>
 
         <div class="space-y-3">
@@ -118,7 +197,7 @@
         </div>
       </section>
 
-      <!-- CARD 3: BOAS PRÁTICAS & DESEMPENHO (MEMÓRIA) -->
+      <!-- CARD 4: BOAS PRÁTICAS & DESEMPENHO (MEMÓRIA) -->
       <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-lg">
@@ -155,7 +234,7 @@
         </div>
       </section>
 
-      <!-- CARD 4: CÁLCULOS DE LUCRO E MARGEM -->
+      <!-- CARD 5: CÁLCULOS DE LUCRO E MARGEM -->
       <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
         <h3 class="text-lg font-bold text-gray-100 flex items-center gap-2">
           <span>🧮</span> Regras de Cálculo Aplicadas
@@ -169,7 +248,7 @@
 
           <div class="bg-[#131218] p-3 rounded-lg border border-gray-800/40">
             <span class="text-[10px] uppercase font-semibold text-gray-400 block mb-1">Taxa Descontada</span>
-            <span class="text-xs text-emerald-400 font-bold">8% de taxa (Sem Premium)</span> <br>
+            <span class="text-xs text-emerald-400 font-bold">8% de taxa (Sem Premium - Padrão)</span> <br>
             <span class="text-xs text-emerald-400 font-bold">4% de taxa (Com Premium)</span>
             <span class="text-[10px] text-gray-400 block">no valor final da venda</span>
           </div>
