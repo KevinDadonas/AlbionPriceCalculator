@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre o Projeto - Albion Market Monitor</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Opcional: Esconde a barra de rolagem visual mantendo a rolagem ativa */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-[#0f0e13] text-gray-200 h-screen overflow-hidden flex flex-col font-sans">
+
+  <!-- CABEÇALHO / NAVBAR (Fixo no topo) -->
+  <header class="p-4 border-b border-gray-800 bg-[#131218] flex justify-between items-center shrink-0">
+    <div class="flex items-center gap-3">
+      <h1 class="text-xl font-bold text-amber-500">Albion Market Monitor</h1>
+      <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-medium">Guia & Documentação</span>
+    </div>
+    
+    <!-- Link para voltar ao monitoramento -->
+    <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 shadow-md">
+      ← Voltar ao Monitor
+    </a>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (Rolagem interna isolada) -->
+  <main class="flex-1 p-4 md:p-8 overflow-y-auto min-h-0 no-scrollbar">
+    <div class="max-w-4xl mx-auto space-y-8 pb-8">
+
+      <!-- HERO / INTRODUÇÃO -->
+      <section class="text-center space-y-3">
+        <h2 class="text-3xl font-extrabold text-gray-100 tracking-tight">Como Funciona a Monitoria de Mercado</h2>
+        <p class="text-sm text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          Entenda de onde vêm as oportunidades exibidas na plataforma, o grau de precisão dos preços e as melhores práticas para utilizar nossa ferramenta sem sobrecarregar seu navegador.
+        </p>
+      </section>
+
+      <!-- CARD 1: ORIGEM DOS DADOS (API) -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
+            📡
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-100">Origem dos Dados: Albion Data Project</h3>
+            <p class="text-xs text-gray-400">Infraestrutura pública mantida pela comunidade</p>
+          </div>
+        </div>
+
+        <p class="text-xs leading-relaxed text-gray-300">
+          Esta aplicação consome a API pública e gratuita do projeto <strong>Albion Data Project</strong>. Trata-se de uma rede distribuída onde os próprios jogadores alimentam o banco de dados em tempo real.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-1">
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Coleta Passiva</span>
+            <p class="text-xs text-gray-400">
+              Jogadores utilizam o cliente de dados oficial do projeto rodando em segundo plano enquanto jogam.
+            </p>
+          </div>
+          <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-1">
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Atualização no Mercado</span>
+            <p class="text-xs text-gray-400">
+              Quando um jogador abre a janela do mercado de uma cidade, os preços visualizados são enviados à API.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 2: CONFIABILIDADE DOS PREÇOS (ALERTAS) -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-lg">
+            ⚖️
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-100">Grau de Confiabilidade & Precisão</h3>
+            <p class="text-xs text-gray-400">O que você precisa considerar antes de comprar um item</p>
+          </div>
+        </div>
+
+        <p class="text-xs leading-relaxed text-gray-300">
+          Como a coleta depende do tráfego de jogadores, a precisão varia de acordo com a movimentação da cidade e do item consultado:
+        </p>
+
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 bg-[#131218] p-3 rounded-lg border border-gray-800/40">
+            <span class="text-emerald-400 text-sm font-bold">✓</span>
+            <div>
+              <h4 class="text-xs font-bold text-gray-200">Mercado Negro (Black Market) & Caerleon</h4>
+              <p class="text-xs text-gray-400">Possuem alto volume de consultas por outros negociantes, resultando em dados frequentemente atualizados.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 bg-[#131218] p-3 rounded-lg border border-gray-800/40">
+            <span class="text-amber-400 text-sm font-bold">⚠️</span>
+            <div>
+              <h4 class="text-xs font-bold text-gray-200">Itens Infrequentes ou Tiers Altos</h4>
+              <p class="text-xs text-gray-400">Equipamentos T8 ou de alta qualidade podem ter preços defasados na API caso nenhum jogador tenha inspecionado aquele item específico recentemente.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DICA RÁPIDA -->
+        <div class="bg-amber-500/5 border border-amber-500/20 rounded-lg p-3 text-xs text-amber-200/80 flex items-center gap-2">
+          <span>💡</span>
+          <span><strong>Dica:</strong> Sempre confira no jogo o horário da última ordem antes de realizar transportes de alto valor!</span>
+        </div>
+      </section>
+
+      <!-- CARD 3: BOAS PRÁTICAS & DESEMPENHO (MEMÓRIA) -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-lg">
+            ⚡
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-100">Uso Consciente do Monitoramento</h3>
+            <p class="text-xs text-gray-400">Evitando travamentos e consumo excessivo de memória</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Botão Controle -->
+          <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400">Controle de Execução</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Recomendado</span>
+            </div>
+            <p class="text-xs text-gray-400 leading-relaxed">
+              Utilize o botão <strong>Iniciar / Pausar Monitoramento</strong>. Deixar o scanner varrendo infinitamente em segundo plano pode acumular milhares de objetos na memória da aba e consumir banda desnecessária.
+            </p>
+          </div>
+
+          <!-- Pausas de Requisição -->
+          <div class="bg-[#131218] p-4 rounded-lg border border-gray-800/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-rose-400">Respeito às Taxas (Rate Limit)</span>
+              <span class="text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Proteção</span>
+            </div>
+            <p class="text-xs text-gray-400 leading-relaxed">
+              Nossa aplicação faz requisições em lotes fracionados com pequenos intervalos de espera. Isso impede que seu endereço de IP seja bloqueado temporariamente pela Cloudflare da API (Erro HTTP 429).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 4: CÁLCULOS DE LUCRO E MARGEM -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
+        <h3 class="text-lg font-bold text-gray-100 flex items-center gap-2">
+          <span>🧮</span> Regras de Cálculo Aplicadas
+        </h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+          <div class="bg-[#131218] p-3 rounded-lg border border-gray-800/40">
+            <span class="text-[10px] uppercase font-semibold text-gray-400 block mb-1">Preço de Compra</span>
+            <span class="text-xs text-gray-200 font-medium">Menor valor de venda direta nas Cidades Reais</span>
+          </div>
+
+          <div class="bg-[#131218] p-3 rounded-lg border border-gray-800/40">
+            <span class="text-[10px] uppercase font-semibold text-gray-400 block mb-1">Taxa Descontada</span>
+            <span class="text-xs text-emerald-400 font-bold">8% de taxa (Sem Premium)</span> <br>
+            <span class="text-xs text-emerald-400 font-bold">4% de taxa (Com Premium)</span>
+            <span class="text-[10px] text-gray-400 block">no valor final da venda</span>
+          </div>
+
+          <div class="bg-[#131218] p-3 rounded-lg border border-gray-800/40">
+            <span class="text-[10px] uppercase font-semibold text-gray-400 block mb-1">Preço de Venda</span>
+            <span class="text-xs text-gray-200 font-medium">Maior valor de compra no Mercado Negro / Caerleon</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RODAPÉ DA PÁGINA -->
+      <footer class="text-center pt-4 border-t border-gray-800/60 text-xs text-gray-500">
+        <p>Albion Online é uma marca registrada da Sandbox Interactive GmbH.</p>
+        <p class="mt-1">Esta ferramenta é um projeto independente mantido pela comunidade e não possui vínculo oficial com os desenvolvedores do jogo.</p>
+      </footer>
+
+    </div>
+  </main>
+
+</body>
+</html>
