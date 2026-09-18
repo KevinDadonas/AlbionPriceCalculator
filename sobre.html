@@ -197,6 +197,86 @@
         </div>
       </section>
 
+      <!-- CARD: ITENS ELEGÍVEIS AO MERCADO NEGRO (BLACK MARKET) -->
+      <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-lg">
+            🏰
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-100">Escopo de Monitoramento: O Mercado Negro (Black Market)</h3>
+            <p class="text-xs text-gray-400">Entenda quais itens fazem parte da nossa base de dados e por que</p>
+          </div>
+        </div>
+
+        <p class="text-xs leading-relaxed text-gray-300">
+          Esta ferramenta é focada no monitoramento de preços para itens elegíveis ao <strong>Black Market de Caerleon</strong>. O Mercado Negro atua como o sistema gerador de <em>loot</em> do jogo: ele compra equipamentos diretamente dos jogadores para redistribuí-los como recompensas em baús e saques de monstros pelo mundo de Albion.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          
+          <!-- O que PODE ser vendido -->
+          <div class="bg-[#131218] p-4 rounded-lg border border-emerald-500/20 space-y-3">
+            <div class="flex items-center gap-2 border-b border-gray-800 pb-2">
+              <span class="text-emerald-400 text-sm">✓</span>
+              <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Itens Permitidos (Monitorados)</h4>
+            </div>
+            
+            <ul class="text-xs text-gray-300 space-y-2">
+              <li class="flex items-start gap-1.5">
+                <span class="text-emerald-400 font-bold">•</span>
+                <span><strong>Armas:</strong> Todas as linhas (espadas, arcos, cajados, adagas, martelos, etc.), incluindo versões normais e de artefato.</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-emerald-400 font-bold">•</span>
+                <span><strong>Armaduras:</strong> Peças de cabeça, peito e pés (Tecido, Couro e Placas).</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-emerald-400 font-bold">•</span>
+                <span><strong>Mão Secundária (Off-hands):</strong> Escudos, tochas, grimórios, orbes, trompas, etc.</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-emerald-400 font-bold">•</span>
+                <span><strong>Acessórios:</strong> Capas comuns, capas de facção e bolsas de todos os níveis.</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-emerald-400 font-bold">•</span>
+                <span><strong>Ferramentas de Coleta:</strong> Machados, picaretas, foices, facas e martelos de pesca.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- O que NÃO PODE ser vendido -->
+          <div class="bg-[#131218] p-4 rounded-lg border border-rose-500/20 space-y-3">
+            <div class="flex items-center gap-2 border-b border-gray-800 pb-2">
+              <span class="text-rose-400 text-sm">✕</span>
+              <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wider">Itens Não Aceitos (Fora do Escopo)</h4>
+            </div>
+            
+            <ul class="text-xs text-gray-300 space-y-2">
+              <li class="flex items-start gap-1.5">
+                <span class="text-rose-400 font-bold">•</span>
+                <span><strong>Recursos:</strong> Minérios, pedras, madeira, fibras, couro, lingotes, blocos, etc. (brutos ou refinados).</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-rose-400 font-bold">•</span>
+                <span><strong>Consumíveis:</strong> Poções, comidas, montarias, tomos de conhecimento e poções de treino.</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-rose-400 font-bold">•</span>
+                <span><strong>Itens Especiais:</strong> Algumas armas de evento ou linhas exclusivas (como armas de cristal puras) não possuem ordens do sistema.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="bg-purple-950/20 border border-purple-800/30 rounded-lg p-3 text-xs text-purple-200/80 flex items-center gap-2.5">
+          <span class="text-base">📌</span>
+          <span><strong>Nota:</strong> Nossa lista de monitoramento é filtrada continuamente para excluir itens sem demanda no Mercado Negro, economizando chamadas de API desnecessárias.</span>
+        </div>
+      </section>
+
       <!-- CARD 4: BOAS PRÁTICAS & DESEMPENHO (MEMÓRIA) -->
       <section class="bg-[#18161e] border border-gray-800/80 rounded-xl p-6 shadow-xl space-y-4">
         <div class="flex items-center gap-3">
