@@ -10,6 +10,50 @@ let todosOsItens = [];
 
 const mapaNomesItens = {};
 
+// Itens marcados como favoritos
+const itensMarcados = new Set();
+
+// Função para alternar o destaque ao clicar na bolinha
+function toggleHighlight(button) {
+  const row = button.closest('tr');
+  const innerDot = button.querySelector('span');
+  const itemId = row.id;
+
+  const isHighlighted = button.classList.contains('active');
+
+  if (!isHighlighted) {
+    // Adiciona o ID ao conjunto de marcados
+    itensMarcados.add(itemId);
+
+    // ATIVAR: Marca o botão (Vermelho Vivo)
+    button.classList.add('active', 'border-red-600', 'bg-red-600/20');
+    button.classList.remove('border-gray-500/50', 'bg-transparent');
+    
+    // Preenche a bolinha interna
+    innerDot.classList.add('bg-red-600', 'shadow-[0_0_8px_rgba(220,38,38,0.8)]');
+    innerDot.classList.remove('bg-transparent');
+
+    // Destaque na linha e borda lateral garantida na primeira célula
+    row.classList.add('bg-red-950/30');
+    row.firstElementChild.classList.add('border-l-4', 'border-l-red-600');
+  } else {
+    // Remove do conjunto
+    itensMarcados.delete(itemId);
+
+    // DESATIVAR: Volta ao estado inicial
+    button.classList.remove('active', 'border-red-600', 'bg-red-600/20');
+    button.classList.add('border-gray-500/50', 'bg-transparent');
+
+    // Limpa a bolinha interna
+    innerDot.classList.remove('bg-red-600', 'shadow-[0_0_8px_rgba(220,38,38,0.8)]');
+    innerDot.classList.add('bg-transparent');
+
+    // Remove destaque da linha
+    row.classList.remove('bg-red-950/30');
+    row.firstElementChild.classList.remove('border-l-4', 'border-l-red-600');
+  }
+}
+
 function nomeQualidade(q) {
   const qualidades = { 1: 'Normal', 2: 'Bom', 3: 'Excelente', 4: 'Obra-Prima', 5: 'Lendário' };
   return qualidades[q] || `Qualidade ${q}`;
@@ -116,17 +160,37 @@ function renderizarLinhaTabela(oportunidade) {
   
   const linhaId = `item-${itemId}-Q${qualidade}`.replace(/[@.]/g, '_');
 
+  // Verifica se o usuário já havia marcado este item como favorito
+  const estaMarcado = itensMarcados.has(linhaId);
+
+  // Classes dinâmicas para a linha e para a primeira célula (onde fica a borda vermelha)
+  const classeLinha = estaMarcado 
+    ? 'hover:bg-[#1f1d27] transition-colors border-b border-gray-800/40 bg-red-950/30'
+    : 'hover:bg-[#1f1d27] transition-colors border-b border-gray-800/40';
+
+  const classePrimeiraCelula = estaMarcado
+    ? 'py-3 px-2 text-center align-middle w-12 border-l-4 border-l-red-600'
+    : 'py-3 px-2 text-center align-middle w-12';
+
+  const classeBotao = estaMarcado
+    ? 'btn-highlight active w-5 h-5 rounded-full border-2 border-red-600 bg-red-600/20 transition-all cursor-pointer flex items-center justify-center mx-auto'
+    : 'btn-highlight w-5 h-5 rounded-full border-2 border-gray-500/50 bg-transparent hover:border-red-500/80 transition-all cursor-pointer flex items-center justify-center mx-auto';
+
+  const classeBolinha = estaMarcado
+    ? 'w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.8)] pointer-events-none transition-all'
+    : 'w-2.5 h-2.5 rounded-full bg-transparent pointer-events-none transition-all';
+
   return `
-    <tr id="${linhaId}" class="hover:bg-[#1f1d27] transition-colors border-b border-gray-800/40">
+    <tr id="${linhaId}" class="${classeLinha}">
       <!-- Coluna 1: Favorito (Bolinha) -->
-      <td class="py-3 px-2 text-center align-middle w-12">
+      <td class="${classePrimeiraCelula}">
         <button 
           type="button"
           onclick="toggleHighlight(this)"
           title="Marcar item como interessante"
-          class="btn-highlight w-5 h-5 rounded-full border-2 border-gray-500/50 bg-transparent hover:border-red-500/80 transition-all cursor-pointer flex items-center justify-center mx-auto"
+          class="${classeBotao}"
         >
-          <span class="w-2.5 h-2.5 rounded-full bg-transparent pointer-events-none transition-all"></span>
+          <span class="${classeBolinha}"></span>
         </button>
       </td>
 
@@ -143,7 +207,7 @@ function renderizarLinhaTabela(oportunidade) {
 
       <!-- Coluna 3: Cidade -->
       <td class="py-3 px-4 text-gray-300">${compra.cidade} → ${venda.cidade}</td>
-      
+
       <!-- Coluna 4: Qualidade -->
       <td class="py-3 px-4">
         <span class="px-2 py-0.5 rounded-full text-[10px] border font-semibold ${estiloQualidade(qualidade)}">${nomeQualidade(qualidade)}</span>
@@ -157,7 +221,7 @@ function renderizarLinhaTabela(oportunidade) {
       <!-- Coluna 6: Compra -->
       <td class="py-3 px-4 text-right font-mono text-gray-300">${compra.preco.toLocaleString('pt-BR')}</td>
 
-      <!-- Coluna 7: Venda Direta -->
+      <!-- Coluna 7: Venda -->
       <td class="py-3 px-4 text-right font-mono text-gray-300">${venda.preco.toLocaleString('pt-BR')}</td>
 
       <!-- Coluna 8: Lucro -->
@@ -181,15 +245,11 @@ function alternarMonitoramento() {
   monitoramentoAtivo = !monitoramentoAtivo;
 
   if (monitoramentoAtivo) {
-    // Estilo visual: Parar (Vermelho / Amber)
     btn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-950/40 cursor-pointer';
     icone.innerText = '⏸';
     texto.innerText = 'Pausar Monitoramento';
-    
-    // Inicia o loop de requisições
     executarCiclo();
   } else {
-    // Estilo visual: Iniciar (Verde)
     btn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/40 cursor-pointer';
     icone.innerText = '▶';
     texto.innerText = 'Iniciar Monitoramento';
@@ -201,7 +261,6 @@ async function executarCiclo() {
 
   await monitorarMercado(todosOsItens);
 
-  // Se o usuário não pausou durante a execução do lote, agenda o próximo ciclo
   if (monitoramentoAtivo) {
     setTimeout(executarCiclo, 10000);
   }
@@ -216,7 +275,6 @@ async function monitorarMercado(listaCompletaItens) {
   const todasCidades = [...cidadesOrigemOk, ...cidadesDestinoOk].join(',');
 
   for (let i = 0; i < lotes.length; i++) {
-    // Se o usuário pausou o monitoramento no meio dos lotes, interrompe o loop imediatamente
     if (!monitoramentoAtivo) break;
 
     const loteAtual = lotes[i];
@@ -296,54 +354,7 @@ async function monitorarMercado(listaCompletaItens) {
 }
 
 async function iniciar() {
-  const tabelaCorpo = document.getElementById('tabelaCorpo');
-  tabelaCorpo.innerHTML = `
-    <tr id="linhaMensagemCarregando">
-      <td colspan="10" class="py-8 text-center text-gray-400">
-        Carregando banco de dados de itens e nomes em português...
-      </td>
-    </tr>
-  `;
-
-  // Carrega apenas a lista estática de IDs de itens
   todosOsItens = await carregarTodosOsItensEquipaveis();
-
-  if (todosOsItens.length > 0) {
-    tabelaCorpo.innerHTML = `
-      <tr>
-        <td colspan="10" class="py-8 text-center text-gray-500">
-          Clique em <b>Iniciar Monitoramento</b> para buscar oportunidades em tempo real.
-        </td>
-      </tr>
-    `;
-  }
-}
-
-document.addEventListener('DOMContentLoaded', iniciar);
-
-async function iniciar() {
-  const tabelaCorpo = document.getElementById('tabelaCorpo');
-  tabelaCorpo.innerHTML = `
-    <tr id="linhaMensagemCarregando">
-      <td colspan="10" class="py-8 text-center text-gray-400">
-        Carregando banco de dados de itens e nomes em português...
-      </td>
-    </tr>
-  `;
-
-  const todosOsItens = await carregarTodosOsItensEquipaveis();
-
-  if (todosOsItens.length > 0) {
-    const msg = document.getElementById('linhaMensagemCarregando');
-    if (msg) msg.remove();
-
-    const rodarCiclo = async () => {
-      await monitorarMercado(todosOsItens);
-      setTimeout(rodarCiclo, 10000);
-    };
-
-    rodarCiclo();
-  }
 }
 
 document.addEventListener('DOMContentLoaded', iniciar);
